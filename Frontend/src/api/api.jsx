@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:1010/api", 
+  // baseURL: "http://localhost:1010/api", 
+  baseURL: "https://codisteassignmenntf.onrender.com/api", 
+
+  // https://codisteassignmenntf.onrender.com/
 });
 
 export const registerUser = (userData) => API.post("/users/register", userData);
