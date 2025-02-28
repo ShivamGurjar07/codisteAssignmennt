@@ -14,6 +14,7 @@ const TravelList = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
+  const [filterLocation, setFilterLocation] = useState("");
 
   const loadEntries = async () => {
     if (!user) return;
@@ -61,16 +62,28 @@ const TravelList = () => {
     if (user) loadEntries();
   }, [user]);
 
+  const filteredEntries = entries.filter((entry) =>
+    entry.location.toLowerCase().includes(filterLocation.toLowerCase())
+  );
+
   return (
     <div className="travel_list">
       <TravelForm refreshEntries={loadEntries} />
       <h2 className="h1">My Travel Entries</h2>
 
+      <input
+        type="text"
+        placeholder="Filter by location..."
+        value={filterLocation}
+        onChange={(e) => setFilterLocation(e.target.value)}
+        className="filter-input"
+      />
+
       {loading ? (
         <p>Loading entries...</p>
-      ) : entries.length > 0 ? (
+      ) : filteredEntries.length > 0 ? (
         <div className="travel-grid">
-          {entries.map((entry) => (
+          {filteredEntries.map((entry) => (
             <div key={entry._id} className="travel-card">
               {entry.imageUrl && (
                 <img
@@ -121,12 +134,10 @@ const TravelList = () => {
         />
       )}
 
-
-
       {selectedLocation && (
         <div className="modal modal-large">
           <div className="modal-content">
-            <h3>Enter Coordinates for {selectedLocation.locationName}</h3>
+            <h3>Enter Coordinates for {selectedLocation.location}</h3>
             <input
               type="number"
               placeholder="Latitude"
@@ -145,11 +156,11 @@ const TravelList = () => {
               <MapContainer
                 center={[lat, lng]}
                 zoom={12}
-                style={{ width: "100%", height: "60vh" }} // Increased map size
+                style={{ width: "100%", height: "60vh" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={[lat, lng]}>
-                  <Popup>{selectedLocation.locationName}</Popup>
+                  <Popup>{selectedLocation.location}</Popup>
                 </Marker>
               </MapContainer>
             )}

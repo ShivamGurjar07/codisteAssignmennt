@@ -98,6 +98,15 @@ button:hover {
   }
 }
 
+.filter-input {
+  text-align: center;
+  /* width:auto; */
+  padding: 8px;
+  margin: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .travel-card {
   background: #fff;
   border-radius: 8px;
